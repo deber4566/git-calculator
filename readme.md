@@ -13,6 +13,7 @@ A simple calculator built using HTML, CSS and JavaScript.
 - Square root (√)
 - Square (x²)
 - Power (^)
+- Error handling (Division by zero, negative square roots)
 - Clear the display
 
 ## Technologies Used

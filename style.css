@@ -146,6 +146,10 @@ h1 {
     font-family: inherit;
 }
 
+#display.error-text {
+    font-size: 16px;
+}
+
 /* ---------- Calculator buttons ---------- */
 
 .buttons {
