@@ -1,6 +1,6 @@
 # My Calculator
 
-A simple calculator built using HTML, CSS and JavaScript.
+A simple calculator built using HTML, CSS and JavaScript. Screenshots are located in the github link.
 
 ## Features
 
