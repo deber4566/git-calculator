@@ -209,11 +209,7 @@ button {
     background: #ddd7ff;
 }
 
-/* Sign toggle and Equals buttons */
-
-.buttons .toggle-sign {
-    grid-column: span 2;
-}
+/* Equals button */
 
 .buttons .equals {
     grid-column: span 2;

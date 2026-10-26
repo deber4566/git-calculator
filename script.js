@@ -56,6 +56,27 @@ function toggleSign() {
     }
 }
 
+function squareRoot() {
+    try {
+        if (display.value === "Error" || display.value === "") {
+            return;
+        }
+        let result = Function(
+            '"use strict"; return (' + display.value + ')'
+        )();
+        if (typeof result === "number" && !isNaN(result)) {
+            if (result < 0) {
+                display.value = "Error";
+                return;
+            }
+            let sqrtVal = Math.sqrt(result);
+            display.value = parseFloat(sqrtVal.toPrecision(12)).toString();
+        }
+    } catch {
+        display.value = "Error";
+    }
+}
+
 document.addEventListener("keydown", function (event) {
     const key = event.key;
 

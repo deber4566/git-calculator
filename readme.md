@@ -10,6 +10,7 @@ A simple calculator built using HTML, CSS and JavaScript.
 - Division
 - Percentage (converts display value into decimal percentage)
 - Sign toggle (+/-)
+- Square root (√)
 - Clear the display
 
 ## Technologies Used
