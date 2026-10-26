@@ -212,6 +212,7 @@ button {
 /* Equals button */
 
 .buttons .equals {
+    grid-column: span 4;
     background: var(--accent);
     color: white;
     font-size: 25px;

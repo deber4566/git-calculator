@@ -8,6 +8,7 @@ A simple calculator built using HTML, CSS and JavaScript.
 - Subtraction
 - Multiplication
 - Division
+- Percentage (converts display value into decimal percentage)
 - Clear the display
 
 ## Technologies Used

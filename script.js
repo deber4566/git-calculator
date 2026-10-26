@@ -22,6 +22,23 @@ function calculate() {
     }
 }
 
+function percentage() {
+    try {
+        if (display.value === "Error" || display.value === "") {
+            return;
+        }
+        let result = Function(
+            '"use strict"; return (' + display.value + ')'
+        )();
+        if (typeof result === "number" && !isNaN(result)) {
+            let decimalPercent = result / 100;
+            display.value = parseFloat(decimalPercent.toPrecision(12)).toString();
+        }
+    } catch {
+        display.value = "Error";
+    }
+}
+
 document.addEventListener("keydown", function (event) {
     const key = event.key;
 
@@ -30,6 +47,9 @@ document.addEventListener("keydown", function (event) {
     } else if (key === "Enter" || key === "=") {
         event.preventDefault();
         calculate();
+    } else if (key === "%") {
+        event.preventDefault();
+        percentage();
     } else if (key === "Escape") {
         clearDisplay();
     } else if (key === "Backspace") {
