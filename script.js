@@ -1,7 +1,9 @@
 let display = document.getElementById("display");
 
 function addValue(value) {
-    if (display.value === "0") {
+    if (display.value === "0" && value === "^") {
+        display.value = "0^";
+    } else if (display.value === "0") {
         display.value = value;
     } else {
         display.value += value;
@@ -14,8 +16,9 @@ function clearDisplay() {
 
 function calculate() {
     try {
+        let expression = display.value.replace(/\^/g, '**');
         display.value = Function(
-            '"use strict"; return (' + display.value + ')'
+            '"use strict"; return (' + expression + ')'
         )();
     } catch {
         display.value = "Error";
@@ -27,8 +30,9 @@ function percentage() {
         if (display.value === "Error" || display.value === "") {
             return;
         }
+        let expression = display.value.replace(/\^/g, '**');
         let result = Function(
-            '"use strict"; return (' + display.value + ')'
+            '"use strict"; return (' + expression + ')'
         )();
         if (typeof result === "number" && !isNaN(result)) {
             let decimalPercent = result / 100;
@@ -44,8 +48,9 @@ function toggleSign() {
         if (display.value === "Error" || display.value === "" || display.value === "0") {
             return;
         }
+        let expression = display.value.replace(/\^/g, '**');
         let result = Function(
-            '"use strict"; return (' + display.value + ')'
+            '"use strict"; return (' + expression + ')'
         )();
         if (typeof result === "number" && !isNaN(result)) {
             let toggled = result * -1;
@@ -61,8 +66,9 @@ function squareRoot() {
         if (display.value === "Error" || display.value === "") {
             return;
         }
+        let expression = display.value.replace(/\^/g, '**');
         let result = Function(
-            '"use strict"; return (' + display.value + ')'
+            '"use strict"; return (' + expression + ')'
         )();
         if (typeof result === "number" && !isNaN(result)) {
             if (result < 0) {
@@ -77,10 +83,28 @@ function squareRoot() {
     }
 }
 
+function square() {
+    try {
+        if (display.value === "Error" || display.value === "") {
+            return;
+        }
+        let expression = display.value.replace(/\^/g, '**');
+        let result = Function(
+            '"use strict"; return (' + expression + ')'
+        )();
+        if (typeof result === "number" && !isNaN(result)) {
+            let sqVal = Math.pow(result, 2);
+            display.value = parseFloat(sqVal.toPrecision(12)).toString();
+        }
+    } catch {
+        display.value = "Error";
+    }
+}
+
 document.addEventListener("keydown", function (event) {
     const key = event.key;
 
-    if ("0123456789+-*/.".includes(key)) {
+    if ("0123456789+-*/.^".includes(key)) {
         addValue(key);
     } else if (key === "Enter" || key === "=") {
         event.preventDefault();
