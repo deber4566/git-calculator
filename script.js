@@ -39,6 +39,23 @@ function percentage() {
     }
 }
 
+function toggleSign() {
+    try {
+        if (display.value === "Error" || display.value === "" || display.value === "0") {
+            return;
+        }
+        let result = Function(
+            '"use strict"; return (' + display.value + ')'
+        )();
+        if (typeof result === "number" && !isNaN(result)) {
+            let toggled = result * -1;
+            display.value = parseFloat(toggled.toPrecision(12)).toString();
+        }
+    } catch {
+        display.value = "Error";
+    }
+}
+
 document.addEventListener("keydown", function (event) {
     const key = event.key;
 
