@@ -1,6 +1,28 @@
 let display = document.getElementById("display");
 
+function isErrorMessage() {
+    return (
+        display.value === "Error" ||
+        display.value === "Cannot divide by zero" ||
+        display.value === "Cannot square root negatives"
+    );
+}
+
+function setErrorMessage(msg) {
+    display.classList.add("error-text");
+    display.value = msg;
+}
+
+function clearErrorState() {
+    display.classList.remove("error-text");
+}
+
 function addValue(value) {
+    if (isErrorMessage()) {
+        clearErrorState();
+        display.value = (value === "^") ? "0^" : value;
+        return;
+    }
     if (display.value === "0" && value === "^") {
         display.value = "0^";
     } else if (display.value === "0") {
@@ -11,93 +33,150 @@ function addValue(value) {
 }
 
 function clearDisplay() {
+    clearErrorState();
     display.value = "0";
 }
 
 function calculate() {
     try {
+        if (isErrorMessage()) {
+            clearDisplay();
+            return;
+        }
         let expression = display.value.replace(/\^/g, '**');
-        display.value = Function(
+        let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
+
+        if (!isFinite(result)) {
+            setErrorMessage("Cannot divide by zero");
+            return;
+        }
+        if (isNaN(result)) {
+            if (/\/0/.test(expression) || /0\s*\*\*\s*-/.test(expression) || /\/\s*\(/.test(expression)) {
+                setErrorMessage("Cannot divide by zero");
+            } else {
+                setErrorMessage("Error");
+            }
+            return;
+        }
+
+        clearErrorState();
+        display.value = parseFloat(result.toPrecision(12)).toString();
     } catch {
-        display.value = "Error";
+        setErrorMessage("Error");
     }
 }
 
 function percentage() {
     try {
-        if (display.value === "Error" || display.value === "") {
+        if (isErrorMessage()) {
+            clearDisplay();
+            return;
+        }
+        if (display.value === "") {
             return;
         }
         let expression = display.value.replace(/\^/g, '**');
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
+        if (!isFinite(result)) {
+            setErrorMessage("Cannot divide by zero");
+            return;
+        }
         if (typeof result === "number" && !isNaN(result)) {
+            clearErrorState();
             let decimalPercent = result / 100;
             display.value = parseFloat(decimalPercent.toPrecision(12)).toString();
         }
     } catch {
-        display.value = "Error";
+        setErrorMessage("Error");
     }
 }
 
 function toggleSign() {
     try {
-        if (display.value === "Error" || display.value === "" || display.value === "0") {
+        if (isErrorMessage()) {
+            clearDisplay();
+            return;
+        }
+        if (display.value === "" || display.value === "0") {
             return;
         }
         let expression = display.value.replace(/\^/g, '**');
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
+        if (!isFinite(result)) {
+            setErrorMessage("Cannot divide by zero");
+            return;
+        }
         if (typeof result === "number" && !isNaN(result)) {
+            clearErrorState();
             let toggled = result * -1;
             display.value = parseFloat(toggled.toPrecision(12)).toString();
         }
     } catch {
-        display.value = "Error";
+        setErrorMessage("Error");
     }
 }
 
 function squareRoot() {
     try {
-        if (display.value === "Error" || display.value === "") {
+        if (isErrorMessage()) {
+            clearDisplay();
+            return;
+        }
+        if (display.value === "") {
             return;
         }
         let expression = display.value.replace(/\^/g, '**');
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
+        if (!isFinite(result)) {
+            setErrorMessage("Cannot divide by zero");
+            return;
+        }
         if (typeof result === "number" && !isNaN(result)) {
             if (result < 0) {
-                display.value = "Error";
+                setErrorMessage("Cannot square root negatives");
                 return;
             }
+            clearErrorState();
             let sqrtVal = Math.sqrt(result);
             display.value = parseFloat(sqrtVal.toPrecision(12)).toString();
         }
     } catch {
-        display.value = "Error";
+        setErrorMessage("Error");
     }
 }
 
 function square() {
     try {
-        if (display.value === "Error" || display.value === "") {
+        if (isErrorMessage()) {
+            clearDisplay();
+            return;
+        }
+        if (display.value === "") {
             return;
         }
         let expression = display.value.replace(/\^/g, '**');
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
+        if (!isFinite(result)) {
+            setErrorMessage("Cannot divide by zero");
+            return;
+        }
         if (typeof result === "number" && !isNaN(result)) {
+            clearErrorState();
             let sqVal = Math.pow(result, 2);
             display.value = parseFloat(sqVal.toPrecision(12)).toString();
         }
     } catch {
-        display.value = "Error";
+        setErrorMessage("Error");
     }
 }
 
@@ -115,7 +194,11 @@ document.addEventListener("keydown", function (event) {
     } else if (key === "Escape") {
         clearDisplay();
     } else if (key === "Backspace") {
-        display.value = display.value.slice(0, -1) || "0";
+        if (isErrorMessage()) {
+            clearDisplay();
+        } else {
+            display.value = display.value.slice(0, -1) || "0";
+        }
     }
 });
 
