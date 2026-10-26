@@ -8,7 +8,7 @@ A simple calculator built using HTML, CSS and JavaScript.
 - Subtraction
 - Multiplication
 - Division
-- Percentage (converts display value into decimal percentage)
+- Percentage (converts display value into decimal percentages)
 - Sign toggle (+/-)
 - Square root (√)
 - Square (x²)
