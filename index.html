@@ -10,53 +10,73 @@
 
 <body>
 
-    <div class="calculator">
+    <div class="app-container">
+        <div class="calculator">
 
-        <header class="calculator-header">
-            <div class="calculator-icon">✳</div>
-            <h1>My Calculator</h1>
-            <p class="subtitle">Simple. Fast. Accurate.</p>
-        </header>
+            <header class="calculator-header">
+                <div class="header-top">
+                    <div class="calculator-icon">✳</div>
+                    <button id="historyToggle" type="button" class="icon-button" aria-label="Toggle calculation history" title="View History">
+                        🕒
+                    </button>
+                </div>
+                <h1>My Calculator</h1>
+                <p class="subtitle">Simple. Fast. Accurate.</p>
+            </header>
 
-        <div class="display-container">
-            <span class="display-label">YOUR CALCULATION</span>
-            <input type="text" id="display" value="0" readonly aria-label="Calculator display">
+            <div class="display-container">
+                <span class="display-label">YOUR CALCULATION</span>
+                <input type="text" id="display" value="0" readonly aria-label="Calculator display">
+            </div>
+
+            <div class="buttons">
+                <button type="button" onclick="clearDisplay()" class="clear">AC</button>
+                <button type="button" onclick="addValue('7')">7</button>
+                <button type="button" onclick="addValue('8')">8</button>
+                <button type="button" onclick="addValue('9')">9</button>
+
+                <button type="button" onclick="addValue('4')">4</button>
+                <button type="button" onclick="addValue('5')">5</button>
+                <button type="button" onclick="addValue('6')">6</button>
+                <button type="button" onclick="addValue('3')">3</button>
+
+                <button type="button" onclick="addValue('1')">1</button>
+                <button type="button" onclick="addValue('2')">2</button>
+                <button type="button" onclick="addValue('0')">0</button>
+                <button type="button" onclick="addValue('+')" class="operator">+</button>
+
+                <button type="button" onclick="addValue('-')" class="operator">−</button>
+                <button type="button" onclick="addValue('*')" class="operator">×</button>
+                <button type="button" onclick="addValue('/')" class="operator">÷</button>
+                <button type="button" onclick="squareRoot()" class="operator" aria-label="Square Root">√</button>
+                <button type="button" onclick="square()" class="operator" aria-label="Square">x²</button>
+                <button type="button" onclick="addValue('^')" class="operator" aria-label="Power">^</button>
+                <button type="button" onclick="percentage()" class="operator" aria-label="Percentage">%</button>
+                <button type="button" onclick="toggleSign()" class="operator" aria-label="Toggle Sign">(+/-)</button>
+                <button type="button" onclick="calculate()" class="equals">=</button>
+            </div>
+
+            <div class="calculator-footer">
+                <button id="themeToggle" type="button">
+                    Switch to Dark Mode
+                </button>
+                <p>Made for everyday calculations</p>
+            </div>
+
         </div>
 
-        <div class="buttons">
-            <button type="button" onclick="clearDisplay()" class="clear">AC</button>
-            <button type="button" onclick="addValue('7')">7</button>
-            <button type="button" onclick="addValue('8')">8</button>
-            <button type="button" onclick="addValue('9')">9</button>
-
-            <button type="button" onclick="addValue('4')">4</button>
-            <button type="button" onclick="addValue('5')">5</button>
-            <button type="button" onclick="addValue('6')">6</button>
-            <button type="button" onclick="addValue('3')">3</button>
-
-            <button type="button" onclick="addValue('1')">1</button>
-            <button type="button" onclick="addValue('2')">2</button>
-            <button type="button" onclick="addValue('0')">0</button>
-            <button type="button" onclick="addValue('+')" class="operator">+</button>
-
-            <button type="button" onclick="addValue('-')" class="operator">−</button>
-            <button type="button" onclick="addValue('*')" class="operator">×</button>
-            <button type="button" onclick="addValue('/')" class="operator">÷</button>
-            <button type="button" onclick="squareRoot()" class="operator" aria-label="Square Root">√</button>
-            <button type="button" onclick="square()" class="operator" aria-label="Square">x²</button>
-            <button type="button" onclick="addValue('^')" class="operator" aria-label="Power">^</button>
-            <button type="button" onclick="percentage()" class="operator" aria-label="Percentage">%</button>
-            <button type="button" onclick="toggleSign()" class="operator" aria-label="Toggle Sign">(+/-)</button>
-            <button type="button" onclick="calculate()" class="equals">=</button>
-        </div>
-
-        <div class="calculator-footer">
-            <button id="themeToggle" type="button">
-                Switch to Dark Mode
-            </button>
-            <p>Made for everyday calculations</p>
-        </div>
-
+        <aside id="historyPanel" class="history-panel" aria-label="Calculation history" hidden>
+            <div class="history-header">
+                <h2>History</h2>
+                <div class="history-actions">
+                    <button id="clearHistoryBtn" type="button" class="history-btn-clear" title="Clear history">Clear</button>
+                    <button id="closeHistoryBtn" type="button" class="history-btn-close" aria-label="Close history">✕</button>
+                </div>
+            </div>
+            <ul id="historyList" class="history-list">
+                <li class="history-empty">No calculations yet</li>
+            </ul>
+        </aside>
     </div>
 
     <script src="script.js"></script>

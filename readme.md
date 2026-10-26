@@ -14,6 +14,7 @@ A simple calculator built using HTML, CSS and JavaScript.
 - Square (x²)
 - Power (^)
 - Error handling (Division by zero, negative square roots)
+- Calculation history panel (view, recall, and clear history)
 - Clear the display
 
 ## Technologies Used

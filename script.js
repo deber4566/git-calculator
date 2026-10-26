@@ -17,18 +17,32 @@ function clearErrorState() {
     display.classList.remove("error-text");
 }
 
+function prepareExpression(val) {
+    if (!val) return "";
+    return val
+        .replace(/(^|[-+*/(])\s*-(\d+(\.\d+)?)\s*\^/g, '$1(-$2)^')
+        .replace(/\^/g, '**');
+}
+
 function addValue(value) {
     if (isErrorMessage()) {
         clearErrorState();
         display.value = (value === "^") ? "0^" : value;
         return;
     }
-    if (display.value === "0" && value === "^") {
+    let current = display.value ? display.value.trim() : "0";
+    if (value === "^" && (current === "0" || current === "")) {
         display.value = "0^";
-    } else if (display.value === "0") {
-        display.value = value;
+        return;
+    }
+    if (current === "0") {
+        if ("+-*/.^".includes(value)) {
+            display.value = "0" + value;
+        } else {
+            display.value = value;
+        }
     } else {
-        display.value += value;
+        display.value = current + value;
     }
 }
 
@@ -43,7 +57,8 @@ function calculate() {
             clearDisplay();
             return;
         }
-        let expression = display.value.replace(/\^/g, '**');
+        let originalExpr = display.value;
+        let expression = prepareExpression(display.value);
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
@@ -62,7 +77,9 @@ function calculate() {
         }
 
         clearErrorState();
-        display.value = parseFloat(result.toPrecision(12)).toString();
+        let finalResult = parseFloat(result.toPrecision(12)).toString();
+        display.value = finalResult;
+        addHistoryEntry(originalExpr, finalResult);
     } catch {
         setErrorMessage("Error");
     }
@@ -77,7 +94,8 @@ function percentage() {
         if (display.value === "") {
             return;
         }
-        let expression = display.value.replace(/\^/g, '**');
+        let originalExpr = display.value + "%";
+        let expression = prepareExpression(display.value);
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
@@ -88,7 +106,9 @@ function percentage() {
         if (typeof result === "number" && !isNaN(result)) {
             clearErrorState();
             let decimalPercent = result / 100;
-            display.value = parseFloat(decimalPercent.toPrecision(12)).toString();
+            let finalResult = parseFloat(decimalPercent.toPrecision(12)).toString();
+            display.value = finalResult;
+            addHistoryEntry(originalExpr, finalResult);
         }
     } catch {
         setErrorMessage("Error");
@@ -104,7 +124,7 @@ function toggleSign() {
         if (display.value === "" || display.value === "0") {
             return;
         }
-        let expression = display.value.replace(/\^/g, '**');
+        let expression = prepareExpression(display.value);
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
@@ -131,7 +151,8 @@ function squareRoot() {
         if (display.value === "") {
             return;
         }
-        let expression = display.value.replace(/\^/g, '**');
+        let originalExpr = "√(" + display.value + ")";
+        let expression = prepareExpression(display.value);
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
@@ -146,7 +167,9 @@ function squareRoot() {
             }
             clearErrorState();
             let sqrtVal = Math.sqrt(result);
-            display.value = parseFloat(sqrtVal.toPrecision(12)).toString();
+            let finalResult = parseFloat(sqrtVal.toPrecision(12)).toString();
+            display.value = finalResult;
+            addHistoryEntry(originalExpr, finalResult);
         }
     } catch {
         setErrorMessage("Error");
@@ -162,7 +185,8 @@ function square() {
         if (display.value === "") {
             return;
         }
-        let expression = display.value.replace(/\^/g, '**');
+        let originalExpr = "(" + display.value + ")²";
+        let expression = prepareExpression(display.value);
         let result = Function(
             '"use strict"; return (' + expression + ')'
         )();
@@ -173,7 +197,9 @@ function square() {
         if (typeof result === "number" && !isNaN(result)) {
             clearErrorState();
             let sqVal = Math.pow(result, 2);
-            display.value = parseFloat(sqVal.toPrecision(12)).toString();
+            let finalResult = parseFloat(sqVal.toPrecision(12)).toString();
+            display.value = finalResult;
+            addHistoryEntry(originalExpr, finalResult);
         }
     } catch {
         setErrorMessage("Error");
@@ -213,3 +239,79 @@ themeToggle.addEventListener("click", function () {
         themeToggle.textContent = "Switch to Dark Mode";
     }
 });
+
+/* ---------- Calculation History Panel Logic ---------- */
+
+let calculationHistory = [];
+try {
+    calculationHistory = JSON.parse(localStorage.getItem("calc_history") || "[]");
+} catch {
+    calculationHistory = [];
+}
+
+function addHistoryEntry(expression, result) {
+    if (!expression || !result || isErrorMessage()) return;
+    let formattedExpr = expression.replace(/\*/g, '×').replace(/\//g, '÷');
+    calculationHistory.unshift({ expression: formattedExpr, result: result });
+    if (calculationHistory.length > 50) {
+        calculationHistory.pop();
+    }
+    try {
+        localStorage.setItem("calc_history", JSON.stringify(calculationHistory));
+    } catch {}
+    renderHistory();
+}
+
+function renderHistory() {
+    const list = document.getElementById("historyList");
+    if (!list) return;
+    if (calculationHistory.length === 0) {
+        list.innerHTML = '<li class="history-empty">No calculations yet</li>';
+        return;
+    }
+    list.innerHTML = calculationHistory.map((item, index) => `
+        <li class="history-item" onclick="recallHistory(${index})" title="Click to recall this result">
+            <div class="history-expr">${item.expression} =</div>
+            <div class="history-res">${item.result}</div>
+        </li>
+    `).join("");
+}
+
+function recallHistory(index) {
+    if (calculationHistory[index]) {
+        clearErrorState();
+        display.value = calculationHistory[index].result;
+    }
+}
+
+function clearHistory() {
+    calculationHistory = [];
+    try {
+        localStorage.removeItem("calc_history");
+    } catch {}
+    renderHistory();
+}
+
+function toggleHistoryPanel() {
+    const panel = document.getElementById("historyPanel");
+    if (panel) {
+        panel.hidden = !panel.hidden;
+    }
+}
+
+const historyToggle = document.getElementById("historyToggle");
+if (historyToggle) {
+    historyToggle.addEventListener("click", toggleHistoryPanel);
+}
+
+const closeHistoryBtn = document.getElementById("closeHistoryBtn");
+if (closeHistoryBtn) {
+    closeHistoryBtn.addEventListener("click", toggleHistoryPanel);
+}
+
+const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener("click", clearHistory);
+}
+
+renderHistory();
