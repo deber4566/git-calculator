@@ -478,6 +478,36 @@ body.dark-mode .history-btn-clear:hover {
     margin-top: 3px;
 }
 
+.history-item-error {
+    border-left: 4px solid #c7354c;
+}
+
+.history-item-error .history-res {
+    font-size: 14px;
+    color: #c7354c;
+    word-break: break-word;
+}
+
+.history-item-error:hover {
+    border-color: #ffd5db;
+    border-left-color: #c7354c;
+    background: #fff5f6;
+}
+
+body.dark-mode .history-item-error {
+    border-left: 4px solid #ff8095;
+}
+
+body.dark-mode .history-item-error .history-res {
+    color: #ff9eaf;
+}
+
+body.dark-mode .history-item-error:hover {
+    border-color: #693546;
+    border-left-color: #ff8095;
+    background: #2a1f2b;
+}
+
 .history-empty {
     text-align: center;
     padding: 30px 10px;

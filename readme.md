@@ -14,7 +14,7 @@ A simple calculator built using HTML, CSS, and JavaScript.
 - Square (x²) - Squares the display number
 - Power (^) - Take the display number and raise it to the power of the number after the ^ sign
 - Error handling (Division by zero, negative square roots) - Shows clear and readable error messages after an invalid operation has been performed.
-- Calculation history panel (view, recall, and clear history) - Keeps track of previous operations and results. Can click on a previous result to display the result. The entire history log can be cleared too.
+- Calculation history panel (view, recall, and clear history) - Keeps track of previous operations, results, and error inputs (e.g., division by zero, invalid expressions, negative square roots). Can click on a previous result or error to recall it. The entire history log can be cleared too.
 - Clear the display
 - Light and Dark mode toggle
 
@@ -30,9 +30,10 @@ Open the index.html file in a web browser.
 
 ## Screenshots
 
-### Scientific Operations
+### Squaring and Exponent Functionality
 
-![Scientific Operations](./Scientific%20Operations%20Screenshot.png)
+![Squaring Number](./SquareNumber.png)
+![Exponent Functionality](./Exponent.png)
 
 ### Square & Square Root Functionality
 
@@ -52,6 +53,6 @@ Open the index.html file in a web browser.
 
 ### Error Handling
 
-![Error Handling 1](./error%20handling1.png)
+![Square root negative number error](./Square%20root%20negative%20error.png)
 
-![Error Handling 2](./error%20handling2.png)
+![Divide by zero error](./Divide%20by%20zero%20error.png)
