@@ -32,27 +32,27 @@ Open the index.html file in a web browser.
 
 ### Squaring and Exponent Functionality
 
-![Squaring Number](./SquareNumber.png)
-![Exponent Functionality](./Exponent.png)
+![Squaring Number](./Screenshots/SquareNumber.png)
+![Exponent Functionality](./Screenshots/Exponent.png)
 
 ### Square & Square Root Functionality
 
-![Square Functionality](./Square%20Functionality.png)
+![Square Functionality](./Screenshots/SquareFunctionality.png)
 
-![Square Root Functionality](./Square%20Root%20Functionality.png)
+![Square Root Functionality](./Screenshots/SquareRootFunctionality.png)
 
 ### Negative Numbers
 
-![Negative Numbers](./Negative%20Numbers.png)
+![Negative Numbers](./Screenshots/NegativeNumbers.png)
 
 ### History Log & Recalling Results
 
-![History Log](./historylog.png)
+![History Log](./Screenshots/historylog.png)
 
-![Reload Result](./reload%20result.png)
+![Reload Result](./Screenshots/reloadresult.png)
 
 ### Error Handling
 
-![Square root negative number error](./Square%20root%20negative%20error.png)
+![Square root negative number error](./Screenshots/Squareroot%20negativeerror.png)
 
-![Divide by zero error](./Divide%20by%20zero%20error.png)
+![Divide by zero error](./Screenshots/Dividebyzeroerror.png)
